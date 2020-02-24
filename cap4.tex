@@ -1,212 +1,174 @@
 \chapter{Resultados} \label{resultados}
 
-  Na\textbf{ Figura \ref{ETHEL}} pode se observar a saída de um dos testes realizados com o ETHEL. Como pode-se constatar foram incluídas as métricas excursão máxima AP (\textit{AMPLITUDE\_AP}) e excursão máxima ML (\textit{AMPLITUDE\_ML}). As métrias são apresentadas no ETHEL em milímetros (mm). Mas para facilitar uma futura comparação dos resultados com o \textit{Posturography Test} Os resultados são apresentadas em centímetros e, podem ser conferidos no \textbf{Apêndice \ref{resultadostestes}}. 
+A API pode ser encontrada em funcionamento em um ambiente de testes no link \href{http://bit.ly/tcc-pdf}{http://bit.ly/tcc-pdf}. Suas funcionalidades de leitura encontram-se livres para serem acessadas, porém as funcionalidades que alterem o estado do banco de dados estão restritas aos usuários cadastrados. Apesar de estar em funcionamento e livre para ser acessada, este é apenas um ambiente de testes, e sua hospedagem no servidor do Núcleo de Biologia Computacional e Gestão de Informações Biotecnológicas (NBCGIB) está sendo configurada.
 
+Para o controle destas utilidades existem duas camadas de segurança. 
+A camada de chave de API, apresentada na \textbf{Figura \ref{swaggerAPIKey}} assegura que somente os administradores do sistema, em posse da chave, possam registrar e remover usuários da API.
 
-\begin{figure}[ht]
+\begin{figure}[H]
+\centering
 \captionsetup{justification   = raggedright,
               singlelinecheck = false}
-\caption{Exemplo da saída dos Testes com ETHEL}\label{ETHEL}
-\includegraphics[width=1.0\textwidth]{figs/ETHEL.png}
+\caption{Autorização por Chave de API - Swagger UI}\label{swaggerAPIKey}
+\includegraphics[width=0.9\textwidth]{figs/swaggerAPIKey.png}
+\footnotesize Fonte: Autoria Própria
 \end{figure}
 
+A camada de usuário garante a integridade do sistema, pois esta impede que usuários não autenticados tenham acesso a funcionalidades que alterem o estado do banco de dados. Na \textbf{Figura \ref{swaggerLogin}} é possível ver o método de login, e suas possíveis respostas.
 
-Os testes com o LOS não foram apresentados nesta etapa. A interface gráfica foi implementada e já está funcional. Entretanto, ainda que a descrição deste tipo de teste possa ser encontrada na literatura (\citeauthor{tsang2003effects}, \citeyear{tsang2003effects}), as especificações do cálculo das métricas não fica clara no caso do Posturography Test. Assim o processo de implementação deste módulo ainda encontra-se em andamento. Na \textbf{Figura \ref{LOS}} se observa a interface gráfica desenvolvida para o LOS. Os usuários conseguem interagir e movimentar o cursor na tela, deslocando o corpo na direção do alvo proposto.
-
-
-\begin{figure}[ht]
+\begin{figure}[H]
+\centering
 \captionsetup{justification   = raggedright,
               singlelinecheck = false}
-\caption{Interface Gráfica do Módulo dos LOS} \label{LOS}
-\begin{center}
-	\includegraphics[height=6cm]{figs/LOS1.png} \quad
-	\includegraphics[height=6cm]{figs/LOS2.png}
-\end{center}
+\caption{Login de Usuário - Swagger UI}\label{swaggerLogin}
+\includegraphics[width=1\textwidth]{figs/swaggerLogin.png}
+\footnotesize Fonte: Autoria Própria
 \end{figure}
 
-De forma geral os testes realizados com cada voluntario, utilizando o ETHEL, demoraram entre 10 e 15 minutos. Neste tempo não foi incluído a realização da avaliação inicial descrita no \textbf{Anexo \ref{anexoCEP}} e, realizada por uma Fisioterapeuta. Esta métrica é importante de ser salientada porque, em testes anteriormente feitos com o \textit{Posturography Test}, a equipe relatou demora para 
-finalização do conjunto de testes.
+Para o categoria de funções do usuário, assegurando o acesso e contendo funcionalidades necessárias para o administrador do sistema apresenta as seguintes funcionalidades:
 
-Além da média e do desvio padrão foi  incluído nos resultados (\textbf{Apêndice \ref{resultadostestes}}) o desvio da primeira repetição de cada condição em relação à média das três repetições, na forma de erro relativo. Esta métrica pode ajudar a definir se é necessário ou não a realização de três repetições feitas para cada condição e otimizar o processe de coleta de dados. 
+\begin{itemize}
+    \item \textbf{Login}: Como explicado no tópico \ref{apiDev}, recebe e-mail e senha e retorna um \textit{token} caso a autenticação o ocorra com sucesso.
+    
+    \item \textbf{Senha Esquecida}: Recebe o e-mail do usuário, sendo ele valido, é disparado um e-mail contendo um identificador único para a recuperação da senha.
+    
+    \item \textbf{Resetar Senha}: Continuando o fluxo da função anterior, recebe o identificador e uma nova senha, caso sejam válidos, a nova senha é atribuída ao usuário.
+    
+    \item \textbf{Remover Usuário}: Recebe um e-mail de usuário e a chave de API, caso sejam válidos, o usuário correspondente a aquele e-mail é desativado.
+    
+    \item \textbf{Registrar Usuário}: Recebe e-mail e senha do usuário a ser cadastrado. Também deve ser enviada a chave de API para validação do administrador. A coleção de usuários, no banco de dados, se encontra livre de \textit{schema} devido aos diferentes tipos de usuários. 
+\end{itemize}
 
-Em posse dos resultados dos testes. A distribuição de frequência do erro relativo é apresentada para cada uma das métricas estimas. Na distribuição de frequência do erro relativo da velocidade média (\textbf{Figura \ref{DistVM}}), observa-se maior frequência entre o terceiro (4,10 - 6,14\%) e quarto (6,14 - 8,20\%) intervalo. Na Excursão Máxima AP (\textbf{Figura \ref{DistAP}}) o primeiro (0 - 4,64\%) e o quarto (13,91 - 18,55\%) intervalo apresentam maior frequência. Na Excursão Máxima ML (\textbf{Figura \ref{DistML}}) o terceiro (9,74 - 14,61\%) intervalo apresentou a maior frequência.
+Para que o usuário tenha controle das configurações do conteúdo a ser extraído, foi criada a seção de Extração:
 
+\begin{itemize}
+    \item \textbf{Registrar Parâmetros}: Conforme explicado anteriormente no tópico \ref{apiDev}, esta requisição recebe um objeto JSON, com as informações necessárias para realizar um extração, e o \textit{token} de usuário, como pode ser observado na \textbf{Figura \ref{swaggerExtractParam}}. Este objeto é salvo no banco de dados e utilizado ao realizar extrações.
+    
+    \item \textbf{Parâmetros Registrados}: Realiza uma consulta no banco de dados e retorna um objeto JSON com um vetor de parâmetros que já estão registrados.
+    
+    \item \textbf{Remover Parâmetro}: Recebe um ID de parâmetro e o \textit{token} de usuário, sendo válidos, o parâmetro é removido do banco de dados.
+\end{itemize}
 
-
-\begin{figure}[ht]
+\begin{figure}[H]
+\centering
 \captionsetup{justification   = raggedright,
               singlelinecheck = false}
-\caption{Distribuição de Frequência do Erro Relativo. Velocidade Média.}\label{DistVM}
-\includesvg[width=1.0\textwidth]{figs/VM.svg}
+\caption{Parâmetros de Extração - Swagger UI}\label{swaggerExtractParam}
+\includegraphics[width=1\textwidth]{figs/SwaggerUIExample.png}
+\footnotesize Fonte: Autoria Própria
 \end{figure}
 
-\begin{figure}[ht]
+Em relação a informação já extraída, são entregues as seguintes funcionalidades:
+
+\begin{itemize}
+    \item \textbf{Informações Extraídas}: Consulta no banco de dados todas as informações extraídas e as retorna em um vetor de objetos JSON correspondente a cada arquivo, contendo as informações que foram extraídas de tal.
+    
+    \item \textbf{Remover Informação Extraída}: Recebe o ID correspondente a um objeto de informações extraídas, e um \textit{token} de usuário, sendo válido, remove o objeto do banco de dados.
+\end{itemize}
+
+Por fim há a função responsável por receber um arquivo, o \textit{token} de usuário e a identificação do arquivo, como pode ser visto na \textbf{Figura \ref{swaggerUploadFile}}. Ao ser recebido, são buscados os parâmetros que possuem o mesmo valor do arquivo enviado no campo \textit{docType}, e assim serão extraídas as informações para cada parâmetro definido. A requisição é respondida com um objeto JSON contendo todas as informações extraídas, em caso de sucesso.
+
+\begin{figure}[H]
+\centering
 \captionsetup{justification   = raggedright,
               singlelinecheck = false}
-\caption{Distribuição de Frequência do Erro Relativo. Excursão Máxima AP.}\label{DistAP}
-\includesvg[width=1.0\textwidth]{figs/AP.svg}
+\caption{Envio de Arquivo - Swagger UI}\label{swaggerUploadFile}
+\includegraphics[width=1\textwidth]{figs/swaggerUploadFile.png}
+\footnotesize Fonte: Autoria Própria
 \end{figure}
 
-\begin{figure}[ht]
-\captionsetup{justification   = raggedright,
-              singlelinecheck = false}
-\caption{Distribuição de Frequência do Erro Relativo. Excursão Máxima ML.}\label{DistML}
-\includesvg[width=1.0\textwidth]{figs/ML.svg}
-\end{figure}
+Como pode ser notado nas imagens apresentadas neste capitulo, toda a API está documentada e pronta para uso na interface do Swagger, que pode ser encontrada no caminho \textit{/api/docs} (partindo do endereço raiz da aplicação). Neste endereço é possível fazer a utilização da API e ter o entendimento do que cada função faz e o que deve ser retornado.
 
+No curso de Ciência da Computação da UESC há um projeto em desenvolvimento para a criação de uma rede de egressos. Sendo o trabalho de conclusão de curso aprovado, este é o primeiro passo para o aluno se tornar um egresso. Desta forma foi notado que há uma demanda por informações referentes aos egressos que podem ser encontradas no arquivo PDF do trabalho, assim é possível extrair um espécie de ficha do egresso contendo nome do autor, orientador, título do trabalho, palavras-chave e resumo.
 
+Com esta demanda e a necessidade de por a prova a API, foi desenvolvida uma aplicação \textit{front-end} para a utilização do colegiado do curso. 
 
-A métrica que apresentou o menor desvio padrão e menor erro relativo entre a primeira repetição e a média das repetições, foi a velocidade média. E a que apresentou maior desvio padrão e maior erro relativo, foi a excursão máxima ML (\textbf{Tabela \ref{tabelaMinMeanMax}}). Além disso, quando estimado o melhor e o pior caso, levando em conta métrica e condição sensorial. Temos que o melhor caso, ou seja, o caso que apresentou menor desvio padrão e menor erro relativo. Foi quando calculada a métrica velocidade média na condição sensorial olhos fechados sem espuma. Em  contrapartida, o pior caso foi quando estava estimando a métrica excursão máxima na condição sensorial olhos fechados sobre a espuma (\textbf{Figura \ref{piorMelhor}}).
+% Conforme apresentado na figura 12, todas as funcionalidades de usuário da API estão apresentadas nesta tela login
 
-\newline
+% Conforme apresentado na \textbf{Figura \ref{login}}, todas as funcionalidades, pertinentes a usuário, estão ligadas as funções da API. Esta tela representa a página de login por onde o colegiado deve acessar o sistema.
 
+% Utilizando a chave de API foi criada uma conta de usuário para o colegiado. Na \textbf{Figura \ref{login}} a tela de login no sistema do colegiado é apresentada. Todas as funcionalidades de usuário estão em comunicação com as funções da API.
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-\begin{table}[]
- \captionsetup{justification   = raggedright,
-              singlelinecheck = false}
- \caption{Desvio Padrão e Erro Relativo. Mínimo, Médio e Máximo.} \label{tabelaMinMeanMax}
-\begin{tabular}{@{}lccc@{}}
-\toprule
-                     & \textbf{Velocidade Média} & \textbf{Excursão Máxima AP} & \textbf{Excursão Máxima ML} \\ \midrule
-Desvio Padrão Mínimo & 0,02                      & 0,04                        & 0,19                        \\
-Desvio Padrão Médio  & 0,16                      & 0,35                        & 0,56                        \\
-Desvio Padrão Máximo & 0,54                      & 1,41                        & 1,80                        \\ \midrule
-Erro Mínimo          & 0,64\%                    & 0,83\%                      & 0,95\%                      \\
-Erro Médio           & 7,81\%                    & 14,28\%                     & 15,22\%                     \\
-Erro Máximo          & 21,15\%                   & 47,21\%                     & 49,68\%                \\  \midrule  
-\end{tabular}
-\end{table}
-
-\begin{figure}[ht]
-\captionsetup{justification   = raggedright,
-              singlelinecheck = false}
-\caption{Melhor e Pior caso dos testes. Levando em conta métrica estimada e condição sensorial.}\label{piorMelhor}
-\includegraphics[width=1.0\textwidth]{result.png}
-\end{figure}
-
-Os resultados apresentados mostram as inclusões das métricas e da interface gráfica do módulo LOS. Além disso, examina os resultados dos testes realizados. Com objetivo de possibilitar conclusões a respeito da necessidade da realização de três repetições em cada condição sensorial na execução dos teste.
-
-
-% \begin{longtable}{|c|c|c|c|c|c|}
+% \begin{figure}[H]
+% \centering
 % \captionsetup{justification   = raggedright,
 %               singlelinecheck = false}
-% \caption{Resultados testes} \label{tabelaResultados}
-% \label{resultadostestes}\\
-% \hline
-% \textbf{Paciente}   & \textbf{Teste}                             & \textbf{Condição} & \textbf{Média} & \textbf{Desvio} & \textbf{Erro} \\
-% & & & & \textbf{Padrão} & \textbf{(\%)} \\ \hline
-% \endfirsthead
-% %
-% \endhead
-% \multirow{12}{*}{1} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,18           & 0,10                   & 9,42               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,30           & 0,03                   & 0,97               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,76           & 0,09                   & 5,20               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,60           & 0,23                   & 9,75               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 0,69           & 0,28                   & 42,28              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 0,94           & 0,12                   & 2,87               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,66           & 0,48                   & 8,95               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,66           & 0,44                   & 10,89              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 1,70           & 0,21                   & 12,16              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,57           & 0,71                   & 49,68              \\ \cline{3-6} 
-%                     &                                            & OASE              & 3,31           & 0,40                   & 13,05              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 4,21           & 0,60                   & 14,01              \\ \hline
-% \multirow{12}{*}{2} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,41           & 0,24                   & 18,67              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,59           & 0,15                   & 7,29               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,97           & 0,23                   & 11,66              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 3,82           & 0,59                   & 3,47               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 1,22           & 0,32                   & 20,58              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,54           & 0,25                   & 16,15              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,91           & 0,44                   & 17,61              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,99           & 0,40                   & 14,64              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 2,79           & 0,19                   & 7,50               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,82           & 0,78                   & 30,53              \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,77           & 0,43                   & 1,77               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 5,32           & 1,33                   & 28,79              \\ \hline
-% \multirow{12}{*}{3} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,28           & 0,05                   & 3,27               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,35           & 0,08                   & 4,75               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,62           & 0,39                   & 13,39              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,87           & 0,13                   & 7,61               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 1,24           & 0,17                   & 11,46              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,18           & 0,16                   & 2,07               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,66           & 0,25                   & 13,13              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,42           & 0,04                   & 2,36               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 2,19           & 0,26                   & 12,96              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,92           & 0,43                   & 11,64              \\ \cline{3-6} 
-%                     &                                            & OASE              & 3,19           & 0,78                   & 2,97               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 4,26           & 0,89                   & 21,45              \\ \hline
-% \multirow{12}{*}{4} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,10           & 0,02                   & 2,05               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,20           & 0,03                   & 1,67               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,42           & 0,16                   & 12,53              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,18           & 0,37                   & 18,18              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 0,79           & 0,12                   & 9,99               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 0,74           & 0,09                   & 13,59              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,63           & 0,40                   & 22,72              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,10           & 0,93                   & 3,47               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 2,20           & 0,35                   & 12,48              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,27           & 0,43                   & 10,81              \\ \cline{3-6} 
-%                     &                                            & OASE              & 3,14           & 0,24                   & 3,37               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 4,82           & 1,80                   & 28,24              \\ \hline
-% \multirow{12}{*}{5} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,07           & 0,09                   & 6,53               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,33           & 0,23                   & 15,26              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,63           & 0,10                   & 4,62               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,48           & 0,25                   & 10,86              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 1,55           & 0,27                   & 0,83               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,58           & 0,33                   & 15,93              \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,21           & 0,40                   & 3,54               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,15           & 0,61                   & 2,65               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 2,41           & 0,19                   & 6,84               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 3,11           & 0,30                   & 9,67               \\ \cline{3-6} 
-%                     &                                            & OASE              & 3,04           & 0,62                   & 14,67              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 3,85           & 0,66                   & 13,70              \\ \hline
-% \multirow{12}{*}{6} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,66           & 0,08                   & 5,61               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,88           & 0,11                   & 6,41               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,81           & 0,13                   & 0,95               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,68           & 0,33                   & 0,64               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 1,38           & 0,11                   & 8,85               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,57           & 0,18                   & 12,92              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,62           & 0,27                   & 7,59               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,70           & 0,27                   & 14,75              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 3,25           & 0,60                   & 14,01              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 3,14           & 0,66                   & 13,07              \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,42           & 0,25                   & 11,13              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 4,63           & 0,54                   & 6,14               \\ \hline
-% \multirow{12}{*}{7} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 0,87           & 0,09                   & 7,97               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,04           & 0,06                   & 6,33               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,09           & 0,10                   & 4,24               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,82           & 0,14                   & 5,31               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 0,84           & 0,33                   & 17,40              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 0,52           & 0,13                   & 16,36              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,00           & 0,25                   & 14,55              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,48           & 0,13                   & 4,64               \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 1,85           & 0,19                   & 8,18               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,07           & 0,23                   & 12,82              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,90           & 0,30                   & 0,95               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 3,26           & 0,29                   & 6,82               \\ \hline
-% \multirow{12}{*}{8} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 1,21           & 0,12                   & 6,42               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,35           & 0,09                   & 2,63               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,56           & 0,07                   & 4,86               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 2,53           & 0,34                   & 15,60              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 1,60           & 0,45                   & 1,27               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,38           & 0,43                   & 19,27              \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,24           & 0,75                   & 8,39               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 3,08           & 1,41                   & 47,21              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 2,28           & 0,64                   & 31,49              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,64           & 0,73                   & 20,94              \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,43           & 0,47                   & 7,39               \\ \cline{3-6} 
-%                     &                                            & OFSE              & 3,96           & 0,86                   & 24,55              \\ \hline
-% \multirow{12}{*}{9} & \multirow{4}{*}{Velocidade Média (cm/seg)} & OASP              & 0,96           & 0,08                   & 7,51               \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,19           & 0,05                   & 4,58               \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,36           & 0,26                   & 21,15              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,97           & 0,24                   & 14,08              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima AP (cm)}   & OASP              & 0,87           & 0,23                   & 30,47              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 1,00           & 0,40                   & 30,35              \\ \cline{3-6} 
-%                     &                                            & OASE              & 1,23           & 0,24                   & 22,67              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 1,88           & 0,36                   & 21,70              \\ \cline{2-6} 
-%                     & \multirow{4}{*}{Excursão Máxima ML (cm)}   & OASP              & 1,46           & 0,37                   & 21,54              \\ \cline{3-6} 
-%                     &                                            & OFSP              & 2,12           & 0,77                   & 6,66               \\ \cline{3-6} 
-%                     &                                            & OASE              & 2,07           & 0,76                   & 41,99              \\ \cline{3-6} 
-%                     &                                            & OFSE              & 4,56           & 0,80                   & 13,96              \\ \hline
-% \end{longtable}
+% \caption{Login - Sistema de Extração de dados de TCC}\label{login}
+% \includegraphics[width=1\textwidth]{figs/tccExtract/login.png}
+% \footnotesize Fonte: Autoria Própria
+% \end{figure}
 
+Ao acessar a aplicação a tela de login é apresentada, e todas as funcionalidades de usuário da API estão conectadas a tal. Esta tela representa por onde o colegiado deve acessar o sistema.
+
+Após efetuar o login, o usuário deve cadastrar os parâmetros de extração. Como pode ser visto na \textbf{Figura \ref{params}}, é apresentada a tela para cadastro de parâmetros em página específica, e na \textbf{Figura \ref{params2}} para parâmetros de página indefinida. Ao enviar o formulário, o objeto JSON é montado e a RegEx codificada para base64 e assim o cadastro é realizado. Como resultado das informações preenchidas na \textbf{Figura \ref{params}} é apresentado o objeto JSON da \textbf{Figura \ref{jsonParams}}.
+
+\begin{figure}[H]
+  \centering
+  \caption{Registro de Parâmetro - Sistema de Extração de dados de TCC}
+  \subfloat[Registro de Parâmetro de Página Específica]{\includegraphics[width=\textwidth]{figs/tccExtract/params.png}\label{params}}
+  \hfill
+  \subfloat[Registro de Parâmetro de Página Indefinida]{\includegraphics[width=\textwidth]{figs/tccExtract/params2.png}\label{params2}}
+
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\captionsetup{justification   = raggedright,
+              singlelinecheck = false}
+\caption{Objeto JSON Resultante do Formulário de Parâmetros de Extração - Sistema de Extração de dados de TCC}\label{jsonParams}
+\includegraphics[width=1\textwidth]{figs/jsonParams.png}
+\footnotesize Fonte: Autoria Própria
+\end{figure}
+
+% \begin{figure}[H]
+% \centering
+% \captionsetup{justification   = raggedright,
+%               singlelinecheck = false}
+% \caption{Registro de Parâmetro de Página Específica - Sistema de Extração de dados de TCC}\label{params}
+% \includegraphics[width=1\textwidth]{figs/tccExtract/params.png}
+% \footnotesize Fonte: Autoria Própria
+% \end{figure}
+
+% \begin{figure}[H]
+% \centering
+% \captionsetup{justification   = raggedright,
+%               singlelinecheck = false}
+% \caption{Registro de Parâmetro de Página Indefinida - Sistema de Extração de dados de TCC}\label{params2}
+% \includegraphics[width=1\textwidth]{figs/tccExtract/params2.png}
+% \footnotesize Fonte: Autoria Própria
+% \end{figure}
+
+Os parâmetros registrados podem ser consultados na próxima aba, como apresentado na \textbf{Figura \ref{paramsR}}, lá a informação é recuperada do banco de dados e é possível remover um registro, caso desejado.
+
+\begin{figure}[H]
+\centering
+\captionsetup{justification   = raggedright,
+              singlelinecheck = false}
+\caption{Parâmetros Registrados - Sistema de Extração de dados de TCC}\label{paramsR}
+\includegraphics[width=1\textwidth]{figs/tccExtract/paramsR2.png}
+\footnotesize Fonte: Autoria Própria
+\end{figure}
+
+Com os parâmetros devidamente registrados, é possível submeter novos arquivos, na \textbf{Figura \ref{upload}} o botão de upload apresentado aceita um ou mais arquivos PDF, mas respeitando uma das constrições de API RESTful, é feita apenas uma requisição para cada arquivo.
+
+\begin{figure}[H]
+\centering
+\captionsetup{justification   = raggedright,
+              singlelinecheck = false}
+\caption{Envio de Arquivos - Sistema de Extração de dados de TCC}\label{upload}
+\includegraphics[width=1\textwidth]{figs/tccExtract/upload.png}
+\footnotesize Fonte: Autoria Própria
+\end{figure}
+
+Após enviado, o resultado da extração pode ser consultado na aba seguinte. A tabela apresentada na \textbf{Figura \ref{extr}} é montada de acordo com os parâmetros que foram definidos como primordiais para o projeto de egressos.
+
+Havendo mais informações extraídas, estas podem ser acessadas no formato de objeto JSON através do botão \textit{Mais} a direita. E o resumo no botão presente à esquerda.
+
+\begin{figure}[H]
+\centering
+\captionsetup{justification   = raggedright,
+              singlelinecheck = false}
+\caption{Informações Extraídas - Sistema de Extração de dados de TCC}\label{extr}
+\includegraphics[width=1\textwidth]{figs/tccExtract/extr.png}
+\footnotesize Fonte: Autoria Própria
+\end{figure}

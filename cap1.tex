@@ -1,25 +1,38 @@
 \chapter{Introdução}
 
-A extração de dados
+Com sua primeira versão no início da década de 90, o formato de arquivos Portable Document Format (PDF) foi criado pela Adobe Systems com o intuito de tornar a troca de documentos algo mais prático e seguro (\citeauthor{lin2011mathematical}, \citeyear{lin2011mathematical}). Conforme sua popularização foi crescendo, setores técnicos passaram a adotar o formato em seus manuais e documentos, o que acarretou na adoção do formato em algumas ISO's, até que em 2008 foi publicada sua própria ISO (\hspace{1sp}\cite{ISO32000}).
+Atingido o objetivo de ser um formato de arquivo que representa documentos independentemente de hardware e software, este é atualizado até os dias atuais.
 
-\section{Objetivos}
+Proveniente deste crescimento, é natural que surgisse a necessidade de ferramentas que extraíssem os dados de tais documentos. O grande número de arquivos e informações úteis em tais, impulsionou a criação de diversas ferramentas com este objetivo. Porém, não é uma tarefa fácil, a organização interna e as diferentes formas de gerar um arquivo PDF induziram a soluções para extrações de informações específicas, e ainda assim não muito confiáveis.
 
-\subsection{ Objetivo Geral}
-    Propor uma API para análise e extração de dados textuais de documentos PDF de forma customizável
+Existem trabalhos científicos neste formato, como os apresentados por \citeauthor{sasirekhatext}, \citeauthor{ajedig2011pdf}, \citeauthor{marinai2009metadata} e \citeauthor{lin2011mathematical} Porém, com a dificuldade para extração dos dados muitas informações não são aproveitadas. Existem ferramentas que catalogam estes trabalhos, mas com a extração de informações selecionadas diretamente dos arquivos é possível criar um banco de dados onde as informações podem ser utilizadas e facilmente acessadas.
 
-\subsection{Objetivos Específicos}
-\begin{enumerate}
-\item Disponibilizar a ferramenta desenvolvida, de maneira online;
+Considerando os documentos PDF como uma grande fonte de informações, e a extração dos dados como uma ferramenta, surgem diversas possibilidades de utilização desta extração. E assim a construção deste projeto como uma API tornaria possível que diversos outros sistemas que necessitem realizar a extração de dados o utilizem.
 
-\item Implementar método de autenticação da API por outras aplicações;
+Neste contexto foi proposta uma solução onde, através da utilização de ferramentas atuais e confiáveis, seria possível definir o que será extraído e filtrar estas informações. Além disso, a utilização de tal software poderia ser feita tanto por usuários quanto por outros sistemas. Assim, dada a relevância deste problema, o sistema aqui descrito deve sanar muitas necessidades já descritas e ser apto a receber novos módulos com novas funcionalidades e melhorias.
 
-\item Possibilitar aos usuários personalizar as buscas no PDF por localização do conteúdo específico;
+\section{Objetivo Geral}
 
-\item Gerar documentação da API;
+Propor uma API RESTful para a extração de dados textuais de documentos PDF padronizados.
 
-\item Testar a API através da classificação de TCC's do curso de CIC da UESC.
+\section{Objetivos Específicos}
 
-\end{enumerate}
+\begin{itemize}
+\item Garantir segurança da API e integridade dos dados.
+
+\item Gerar documentação da API.
+
+\item Validar a API através de site que a consuma para realizar a classificação de TCC's do curso de Ciência da Computação da Universidade Estadual de Santa Cruz;
+
+\end{itemize}
 
 \section{Organização do Trabalho}
-Este trabalho é organizado com a seguinte estrutura: O capítulo 2 apresenta o referêncial teórico, demonstra todo o embasamento teórico utilizado na construção deste estudo. O capítulo 3 explica todos os materiais e métodos empregados para chegar ao resultado final. O capítulo 4 expõe os resultados obtidos com testes realizados na plataforma de análise de TCC's e a documentação obtida com a API. Por fim, o capítulo 5 conclui o trabalho e apresenta as propostas de trabalhos futuros.
+% Este trabalho é organizado com a seguinte estrutura: O capítulo 2 apresenta o referêncial teórico, demonstra todo o embasamento teórico utilizado na construção deste estudo. O capítulo 3 explica todos os materiais e métodos empregados para chegar ao resultado final. O capítulo 4 expõe os resultados obtidos com testes realizados na plataforma de análise de TCC's e a documentação obtida com a API. Por fim, o capítulo 5 conclui o trabalho e apresenta as propostas de trabalhos futuros.
+
+O Capítulo 2 apresenta o referencial teórico, resultante de pesquisas e estudos de diversas bibliotecas e tecnologias utilizadas para a construção deste sistema. O estudo destas tecnologias foi além do âmbito acadêmico e fundamentado em ferramentas muito utilizadas no mercado de trabalho (\hspace{1sp}\cite{stack}). Através do \cite{stackTrends} foi analisada a popularidade de tais tecnologias, e o estudo detalhado visando a integração ao sistema. Além disso são apresentados sistemas com propósito similar ao trabalho aqui apresentado.
+
+O Capítulo 3 apresenta os Materiais e Métodos, este é dividido em duas principais partes, a primeira lista ferramentas e suas versões, explicando sua importância e o papel exercido no sistema. A segunda descreve como foi a implementação da API, passando desde o estudo das ferramentas até o desenvolvimento do código.
+
+O Capítulo 4 descreve os resultados obtidos com a API, e fundamenta tais resultados com a criação e utilização de um sistema que consome a API. Este tem o objetivo de extrair informações de TCC's do curso de Ciência da Computação da UESC.
+
+O Capítulo 5 apresenta as conclusões e discussões como consequência deste projeto. Assim como também indica possíveis trabalhos futuros.
